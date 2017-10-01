@@ -919,8 +919,8 @@ void do_exit(long code)
 
 	if (unlikely(in_interrupt()))
 		panic("Aiee, killing interrupt handler!");
-	if (unlikely(!tsk->pid) || unlikely(tsk->pid==1))
-		panic("Attempted to kill the idle task! or init task");
+	if (unlikely(!tsk->pid))
+		panic("Attempted to kill the idle task!");
 
 	/*
 	 * If do_exit is called because this processes oopsed, it's possible
@@ -1044,7 +1044,7 @@ void do_exit(long code)
 	/*
 	 * Make sure we are holding no locks:
 	 */
-	debug_check_no_locks_held(tsk);
+	debug_check_no_locks_held();
 	/*
 	 * We can do this unlocked here. The futex code uses this flag
 	 * just to verify whether the pi state cleanup has been done

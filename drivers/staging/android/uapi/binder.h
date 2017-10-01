@@ -32,8 +32,8 @@ enum {
 	BINDER_TYPE_HANDLE	= B_PACK_CHARS('s', 'h', '*', B_TYPE_LARGE),
 	BINDER_TYPE_WEAK_HANDLE	= B_PACK_CHARS('w', 'h', '*', B_TYPE_LARGE),
 	BINDER_TYPE_FD		= B_PACK_CHARS('f', 'd', '*', B_TYPE_LARGE),
-	BINDER_TYPE_PTR		= B_PACK_CHARS('p', 't', '*', B_TYPE_LARGE),
 	BINDER_TYPE_FDA		= B_PACK_CHARS('f', 'd', 'a', B_TYPE_LARGE),
+	BINDER_TYPE_PTR		= B_PACK_CHARS('p', 't', '*', B_TYPE_LARGE),
 };
 
 enum {
@@ -56,6 +56,7 @@ typedef __u64 binder_uintptr_t;
 struct binder_object_header {
 	__u32        type;
 };
+
 /*
  * This is the flattened representation of a Binder object for transfer
  * between processes.  The 'offsets' supplied as part of a binder transaction
@@ -245,6 +246,11 @@ struct binder_transaction_data {
 	} data;
 };
 
+struct binder_transaction_data_sg {
+	struct binder_transaction_data transaction_data;
+	binder_size_t buffers_size;
+};
+
 struct binder_ptr_cookie {
 	binder_uintptr_t ptr;
 	binder_uintptr_t cookie;
@@ -258,11 +264,6 @@ struct binder_handle_cookie {
 struct binder_pri_desc {
 	__s32 priority;
 	__u32 desc;
-};
-
-struct binder_transaction_data_sg {
-	struct binder_transaction_data transaction_data;
-	binder_size_t buffers_size;
 };
 
 struct binder_pri_ptr_cookie {
